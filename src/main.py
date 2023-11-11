@@ -13,3 +13,7 @@ def merge_intervals_endpoint(intervals_set: IntervalSet):
     merged_intervals = merge_handler.merge_intervals(intervals_set.includes, intervals_set.excludes)
 
     return merged_intervals
+
+@app.get("/api/healthchecker")
+def root():
+    return {"message": "The API is LIVE!!"}

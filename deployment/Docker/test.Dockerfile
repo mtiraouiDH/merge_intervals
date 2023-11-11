@@ -11,4 +11,4 @@ COPY tests/ .
 
 ENV APP_ADDRESS=http://app:8000
 
-CMD [ "pytest", "/test-app" ]
+CMD [ "pytest", "/test-app", "-v"]

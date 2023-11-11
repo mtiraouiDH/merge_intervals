@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-app
+        image: mtiraouidhia515/kub-backend-app:latest
+    livenessProbe:
+      httpGet:
+        path: /api/healthchecker
+        port: 8000
+      failureThreshold: 1
+      periodSeconds: 60
+        # env: 
+          # - name: APP_ADRESS
+            # value: "10.103.145.218"
+            # value: "auth-service.default"
