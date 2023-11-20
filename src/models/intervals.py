@@ -11,6 +11,8 @@ class Interval(BaseModel):
         end = self.end
         if start > end:
             raise ValueError("Start must be less than or equal to end")
+        elif start == end:
+            raise ValueError("Start must not be equal end")
         return self
 
 class IntervalSet(BaseModel):

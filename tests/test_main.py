@@ -1,6 +1,7 @@
 import json
 from fastapi.testclient import TestClient
 from main import app
+import logging
 import os
 
 app_address = os.environ['APP_ADDRESS']
@@ -100,3 +101,16 @@ def test_merge_intervals_Complex_4():
 
     result = response.json()
     assert result == []
+
+def test_merge_intervals_Invalid_Interval():
+    logging.basicConfig(level=logging.INFO)
+    includes = [{"start": 0, "end": 0}]
+    excludes = [{"start": 0, "end": 0}]
+    payload = {"includes": includes, "excludes": excludes}
+
+    response = client.post(app_address + "/api/v1/merge_intervals", json=payload)
+    assert response.status_code == 422
+
+    result = response.json()
+    logging.info(result)
+    assert result == {"detail":[{"type":"value_error","loc":["body","includes",0],"msg":"Value error, Start must not be equal end","input":{"start":0,"end":0},"ctx":{"error":{}},"url":"https://errors.pydantic.dev/2.4/v/value_error"},{"type":"value_error","loc":["body","excludes",0],"msg":"Value error, Start must not be equal end","input":{"start":0,"end":0},"ctx":{"error":{}},"url":"https://errors.pydantic.dev/2.4/v/value_error"}]}

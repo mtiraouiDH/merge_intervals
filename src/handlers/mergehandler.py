@@ -42,29 +42,40 @@ class MergeHandler():
             start2, end2 = sorted_excludes_tuples[j]
 
             # Check if sorted_includes_tuples interval is entirely before sorted_excludes_tuples interval
+            # includes : 5] 
+            #Exludes   :       [7,8]
             if end1 < start2:
                 output_intervals.append(sorted_includes_tuples[i])
                 i += 1
-
+            # includes :     [] 
+            #Exludes   :  []
             # Check if sorted_includes_tuples is entirely after sorted_excludes_tuples
             # remove the current ixclude interval as it has no effect
+
             elif end2 < start1:
                 sorted_excludes_tuples = sorted_excludes_tuples[1:]
 
             # If there a partial overlap, add the not overlapped range
+            # includes : [ ] 
+            #Exludes   :  []
             elif start1 <= start2 and end1 <= end2:
                 output_intervals.append((sorted_includes_tuples[i][0], sorted_excludes_tuples[j][0]-1))
                 i += 1
 
             # If there an overlap, move to the next interval in sorted_includes_tuples
+            # includes :  [ ] 
+            #Exludes   :  [   ]
             elif end1 >= start2 and end1 <= end2:
                 i += 1
-
+            # includes :  [    ] 
+            #Exludes   :  [ ][]
             # If sorted_includes_tuples extends beyond sorted_excludes_tuples
             elif end1 > end2 and start2 < start1:
                 sorted_includes_tuples[i] = (sorted_excludes_tuples[j][1]+1, sorted_includes_tuples[i][1])
                 j += 1
             # If sorted_includes_tuples includes sorted_excludes_tuples
+            # includes : [     ] 
+            #Exludes   :   [ ]
             else:
                 output_intervals.append((sorted_includes_tuples[i][0], sorted_excludes_tuples[j][0]-1))
                 sorted_includes_tuples[i] = (sorted_excludes_tuples[j][1]+1, sorted_includes_tuples[i][1])
